@@ -77,7 +77,7 @@ const Login = ({ navigation }) => {
             </TouchableOpacity> */}
 
             <View style={styles.rodape}>
-              <Text style={styles.rodapeText}>Não possui conta? {"   "}</Text>
+              <Text style={styles.rodapeText}>Não possui conta?</Text>
               <TouchableOpacity onPress={OnClickRegistrar}>
                 <Text
                   style={
@@ -85,7 +85,7 @@ const Login = ({ navigation }) => {
                     {     color:"#0A7208", fontWeight: 700, fontSize: 16 })
                   }
                 >
-                  Faça sua inscrição!
+                Faça sua inscrição!
                 </Text>
               </TouchableOpacity>
             </View>
@@ -117,8 +117,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   image: {
-    height: 200, 
-    width: 200,
+    height: 150, 
+    width: 150,
     resizeMode: "cover", 
     marginTop: 55,
   },
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     display:"flex",
     alignItems: "center",
     justifyContent: "space-evenly",
-    gap: 52,
+    gap: 25,
   },
 
   title: {
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
 
   rodape: {
     flexDirection: "row",
-    width: "62.75%",
+    width: "75%",
     justifyContent: "space-evenly",
     alignItems: "center",
     gap: 20,

@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  ScrollView
 } from "react-native";
 import AuthContext from "../contexts/auth";
 
@@ -39,63 +40,62 @@ const Register= ({navigation}) => {
    <View style={styles.container}>
      <Image style={styles.image} source={icon} />
      <View style={styles.body}>
-       {/* <Text style={styles.title}>Registro</Text> */}
-       <View style={styles.areaInput}>
-         <TextInput
-           name="nome"
-           style={styles.textField}
-           placeholder=" Informe seu Nome"
-           keyboardType="default"
-           onChangeText={ text => setNome(text) }
-         />
-         <TextInput
-           name="email"
-           style={styles.textField}
-           placeholder=" Informe seu Email"
-           keyboardType="Email-address"
-           onChangeText={ text => setEmail(text) }
-         />
-         <TextInput
-           name="password"
-           style={styles.textField}
-           placeholder="Informe sua senha"
-           keyboardType="default"
-           secureTextEntry
-           onChangeText={ text => setPassword(text) }
-         />
-         <TextInput
-           name="password2"
-           style={styles.textField}
-           placeholder="Repita a senha"
-           keyboardType="default"
-           secureTextEntry
-           onChangeText={ text => setPassword2(text) }
-         />
-         <TouchableOpacity style={styles.button}
-          onPress={() => handleOnClick() }
-         >
-           <Text style={(styles.buttonText)}>
-             Registrar
-           </Text>
-         </TouchableOpacity>
+      <ScrollView style={styles.scroll}>      
+        {/* <Text style={styles.title}>Registro</Text> */}
+        <View style={styles.areaInput}>
+          <TextInput
+            name="nome"
+            style={styles.textField}
+            placeholder=" Informe seu Nome"
+            keyboardType="default"
+            onChangeText={ text => setNome(text) }
+          />
+          <TextInput
+            name="email"
+            style={styles.textField}
+            placeholder=" Informe seu Email"
+            keyboardType="Email-address"
+            onChangeText={ text => setEmail(text) }
+          />
+          <TextInput
+            name="password"
+            style={styles.textField}
+            placeholder="Informe sua senha"
+            keyboardType="default"
+            secureTextEntry
+            onChangeText={ text => setPassword(text) }
+          />
+          <TextInput
+            name="password2"
+            style={styles.textField}
+            placeholder="Repita a senha"
+            keyboardType="default"
+            secureTextEntry
+            onChangeText={ text => setPassword2(text) }
+          />
+          <TouchableOpacity style={styles.button}
+            onPress={() => handleOnClick() }
+          >
+            <Text style={(styles.buttonText)}>
+              Registrar
+            </Text>
+          </TouchableOpacity>
 
-         <View style={styles.rodape}>
-            <Text style={styles.rodapeText}>Já possui conta? {"   "}</Text>
-            <TouchableOpacity onPress={handleReturnLogin}>
-              <Text
-                style={
-                  (styles.rodapeText,
-                    {     color:"#0A7208", fontWeight: 700, fontSize: 16 })
-                }
-              >
-                Voltar ao login
-              </Text>
-            </TouchableOpacity>
-          </View>
-  
-         <View style={styles.rodape}>
-         </View>
-       </View>
+          <View style={styles.rodape}>
+              <Text style={styles.rodapeText}>Já possui conta?</Text>
+              <TouchableOpacity onPress={handleReturnLogin}>
+                <Text
+                  style={
+                    (styles.rodapeText,
+                      {     color:"#0A7208", fontWeight: 700, fontSize: 16 })
+                  }
+                >
+                  Voltar ao login
+                </Text>
+              </TouchableOpacity>
+            </View>
+        </View>
+      </ScrollView>
      </View>
      <StatusBar style="auto" />
    </View>
@@ -111,23 +111,29 @@ const styles = StyleSheet.create({
   },
 
   body: {
-    height: "60%",
+    display:"flex",
+    alignItems:"center",
+    justifyContent:"center",
+    height: "65%",
     width: "100%",
-    alignItems: "center",
   },
-
+scroll:{
+  width: "100%",
+},
   image: {
-    height: 200, 
-    width: 200,
+    height: 150, 
+    width: 150,
     resizeMode: "cover", 
     marginTop: 55,
   },
 
   areaInput: {
     width: "100%",
-    height: "80%",
+    height: "100%",
+    display:"flex",
     alignItems: "center",
     justifyContent: "space-evenly",
+    gap:25
   },
 
   title: {

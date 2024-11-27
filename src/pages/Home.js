@@ -65,7 +65,10 @@ export default function HomeScreen({ navigation }) {
           <View style={styles.dot}></View>
         </View>
       </View>
-
+      <View style={styles.containerTitle}>
+        <Text style={styles.textTitle}>Chat de Discussão</Text>
+        <Text style={styles.parag}> Escolha um tema abaixo para acessar o chat!</Text>
+      </View>
       {/* Grid de notícias */}
       <FlatList
         data={newsData}
@@ -123,6 +126,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f9f9f9',
   },
+  containerTitle:{
+    display:"flex",
+    alignItems: "center",
+    justifyContent:"center",
+    width:"100%",
+    paddingHorizontal: 25,
+    paddingBottom: 12,
+  },
+
+  textTitle:{
+    fontSize:20,
+  },
+  parag:{
+
+  },
   text: {
     fontSize: 20,
   },
@@ -130,9 +148,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 0,
+    paddingHorizontal: 16,
     backgroundColor: '#99CD85',
-    height: 170,
+    height: 100,
   },
   navHeader:{
     display:'flex',
@@ -141,12 +159,13 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     width:'100%',
     height: 80,
-    marginTop:65,
+    marginTop:35,
   },
   image: {
-    height: 100, 
-    width: 200,
-    resizeMode: 'cover', 
+    height: 60, 
+    width: 110,
+    resizeMode: 'cover',
+
   },
   slider: {
     height: 200,
