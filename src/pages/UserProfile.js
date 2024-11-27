@@ -3,7 +3,6 @@ import { StyleSheet, View, Text, Image, TouchableOpacity, ActivityIndicator, Ale
 import { getDatabase, ref, get } from "firebase/database";
 import AuthContext from '../contexts/auth';
 import { getLoggedUserID } from '../services/personService';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useFocusEffect } from '@react-navigation/native'; // Importação necessária
 
 const ProfileScreen = ({ navigation }) => {
@@ -68,8 +67,7 @@ const ProfileScreen = ({ navigation }) => {
   }
 
   return (
-    <LinearGradient
-      colors={['#D1FBD3', '#CFE2D0']}
+    <View
       style={styles.container}
     >
       <View style={styles.header}>
@@ -97,13 +95,13 @@ const ProfileScreen = ({ navigation }) => {
           <Text style={styles.logoutText}>SAIR</Text>
         </TouchableOpacity>
       </View>
-    </LinearGradient>
+    </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f5', 
+    backgroundColor: '#fffff', 
   },
   header: {
     flex: 3,
