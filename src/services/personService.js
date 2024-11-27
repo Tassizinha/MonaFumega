@@ -25,21 +25,21 @@ async function newPerson(nome,email, uuidAuth, imagemUrl) {
     });
   }
   const getLoggedUserID = async () => {
-    const userUID = getAuth().currentUser?.uid; // Obtém o UID do usuário logado
+    const userUID = getAuth().currentUser?.uid; 
     console.log("UID do usuário autenticado:", userUID);
     if (!userUID) {
       console.error("Usuário não está logado.");
       return null;
     }
   
-    const tableRef = ref(db, "user"); // Referência à tabela "user"
-    const userQuery = query(tableRef, orderByChild("uuidAuth"), equalTo(userUID)); // Criação da query
+    const tableRef = ref(db, "user"); 
+    const userQuery = query(tableRef, orderByChild("uuidAuth"), equalTo(userUID)); 
   
     try {
-      const snapshot = await get(userQuery); // Busca os dados no Firebase
+      const snapshot = await get(userQuery);
       if (snapshot.exists()) {
         const data = snapshot.val();
-        const [id] = Object.keys(data); // Obtém a chave do primeiro registro
+        const [id] = Object.keys(data);
         console.log("ID do usuário logado:", id);
         return id;
       } else {

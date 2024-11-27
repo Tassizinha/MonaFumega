@@ -1,58 +1,50 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, View, Text, Image, TouchableOpacity,ActivityIndicator,Alert } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, ActivityIndicator, Alert } from 'react-native';
 import { getDatabase, ref, get } from "firebase/database";
 import AuthContext from '../contexts/auth';
 import { getLoggedUserID } from '../services/personService';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useFocusEffect } from '@react-navigation/native'; // Importação necessária
 
 const ProfileScreen = ({ navigation }) => {
-
   const { user, LogoutUser } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const fetchPersonData = async () => {
-    console.log("fetchPersonData foi chamada");
-  
     try {
       const userID = await getLoggedUserID();
-      console.log("ID do usuário logado:", userID);
-  
+
       if (!userID) {
-        console.error("Erro: ID do usuário é nulo.");
         Alert.alert("Erro", "Usuário não encontrado. Faça login novamente.");
         setLoading(false);
         return;
       }
-  
+
       const db = getDatabase();
-      console.log("Banco de dados inicializado com sucesso.");
-  
       const userRef = ref(db, `user/${userID}`);
-      console.log("Referência do banco de dados criada:", userRef);
-  
       const snapshot = await get(userRef);
-      console.log("Resultado da consulta ao Firebase:", snapshot);
-  
+
       if (snapshot.exists()) {
         setUserData(snapshot.val());
-        console.log("Dados do usuário carregados:", snapshot.val());
       } else {
-        console.warn("Aviso: Nenhum dado encontrado para o ID do usuário.");
         Alert.alert("Erro", "Dados do usuário não encontrados.");
       }
     } catch (error) {
-      console.error("Erro ao executar fetchPersonData:", error);
+      console.error("Erro ao buscar dados do usuário:", error);
       Alert.alert("Erro", "Não foi possível carregar os dados do perfil.");
     } finally {
       setLoading(false);
     }
   };
-  
-  useEffect(() => {
-    fetchPersonData(); 
-  }, []);
 
+  // Atualiza os dados toda vez que a tela for focada
+  useFocusEffect(
+    React.useCallback(() => {
+      setLoading(true); // Exibe o indicador de carregamento
+      fetchPersonData(); // Chama a função para atualizar os dados
+    }, [])
+  );
 
   if (loading) {
     return (
@@ -70,7 +62,6 @@ const ProfileScreen = ({ navigation }) => {
       </View>
     );
   }
-  console.log("home: ", user);
 
   async function handleOnClickSair() {
     await LogoutUser();
@@ -78,12 +69,15 @@ const ProfileScreen = ({ navigation }) => {
 
   return (
     <LinearGradient
-    colors={['#D1FBD3', '#CFE2D0']}  
-    style={styles.container}         
-  >
+      colors={['#D1FBD3', '#CFE2D0']}
+      style={styles.container}
+    >
       <View style={styles.header}>
         <View style={styles.avatarContainer}>
-          <Image  source={{ uri: userData.imagemUrl || "https://via.placeholder.com/150" }}  style={styles.avatar} />
+          <Image
+            source={{ uri: userData.imagemUrl || "https://via.placeholder.com/150" }}
+            style={styles.avatar}
+          />
           <TouchableOpacity style={styles.cameraIconContainer}>
             <Text style={styles.cameraIcon}>📷</Text>
           </TouchableOpacity>
@@ -106,7 +100,6 @@ const ProfileScreen = ({ navigation }) => {
     </LinearGradient>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

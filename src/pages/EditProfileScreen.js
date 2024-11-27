@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TextInput, Text, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, TextInput, Text, TouchableOpacity, Alert, ActivityIndicator, Image } from 'react-native';
 import { getLoggedUserID } from '../services/personService';
 import { getDatabase, ref, get, update } from "firebase/database";
 
@@ -7,15 +7,13 @@ const EditProfileScreen = ({ navigation }) => {
   const [formData, setFormData] = useState({
     nome: "",
     email: "",
-    imagemUrl:""
+    imagemUrl: ""
   });
   const [loading, setLoading] = useState(true);
 
   const fetchPersonData = async () => {
-    console.log("fetchPersonData foi chamada");
     try {
-      const userID = await getLoggedUserID(); // Obtém o ID do usuário logado
-      console.log("ID do usuário logado:", userID);
+      const userID = await getLoggedUserID();
 
       if (!userID) {
         Alert.alert("Erro", "Usuário não encontrado. Faça login novamente.");
@@ -23,12 +21,11 @@ const EditProfileScreen = ({ navigation }) => {
       }
 
       const db = getDatabase();
-      const userRef = ref(db, `user/${userID}`); // Referência dinâmica
-      console.log("Referência do usuário no Firebase:", userRef);
-
+      const userRef = ref(db, `user/${userID}`);
       const snapshot = await get(userRef);
+
       if (snapshot.exists()) {
-        setFormData(snapshot.val()); // Preenche o estado com os dados existentes
+        setFormData(snapshot.val());
       } else {
         Alert.alert("Erro", "Dados do usuário não encontrados.");
       }
@@ -36,13 +33,13 @@ const EditProfileScreen = ({ navigation }) => {
       console.error("Erro ao buscar dados do usuário:", error);
       Alert.alert("Erro", "Não foi possível carregar os dados do perfil.");
     } finally {
-      setLoading(false); // Define loading como false ao final
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     fetchPersonData();
-  }, []); // Executa ao montar o componente
+  }, []);
 
   const handleChange = (name, value) => {
     setFormData((prevState) => ({
@@ -61,9 +58,9 @@ const EditProfileScreen = ({ navigation }) => {
     try {
       const db = getDatabase();
       const userRef = ref(db, `user/${userID}`);
-      await update(userRef, formData); // Atualiza todos os campos no banco
+      await update(userRef, formData);
       Alert.alert("Sucesso", "Perfil atualizado com sucesso!");
-      navigation.goBack(); // Retorna à tela anterior após salvar
+      navigation.goBack();
     } catch (error) {
       console.error("Erro ao atualizar perfil:", error);
       Alert.alert("Erro", "Não foi possível atualizar o perfil.");
@@ -72,7 +69,8 @@ const EditProfileScreen = ({ navigation }) => {
 
   if (loading) {
     return (
-      <View style={styles.container}>
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0A7208" />
         <Text style={styles.loadingText}>Carregando...</Text>
       </View>
     );
@@ -80,28 +78,38 @@ const EditProfileScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Nome</Text>
+      {formData.imagemUrl ? (
+        <Image
+          source={{ uri: formData.imagemUrl }}
+          style={styles.profileImage}
+          resizeMode="cover"
+        />
+      ) : (
+        <View style={styles.placeholderImage}>
+          <Text style={styles.placeholderText}>Sem Foto</Text>
+        </View>
+      )}
       <TextInput
         style={styles.input}
-        placeholder="Digite seu nome"
+        placeholder="Nome"
         value={formData.nome}
         onChangeText={(value) => handleChange("nome", value)}
       />
-      <Text style={styles.label}>Email</Text>
       <TextInput
         style={styles.input}
-        placeholder="Digite seu email"
+        placeholder="Email"
         value={formData.email}
+        keyboardType="email-address"
         onChangeText={(value) => handleChange("email", value)}
       />
       <TextInput
         style={styles.input}
-        placeholder="Digite seu link da imagem"
+        placeholder="URL da Imagem"
         value={formData.imagemUrl}
         onChangeText={(value) => handleChange("imagemUrl", value)}
       />
       <TouchableOpacity style={styles.saveButton} onPress={handleSubmit}>
-        <Text style={styles.saveButtonText}>Salvar</Text>
+        <Text style={styles.saveButtonText}>Editar Perfil</Text>
       </TouchableOpacity>
     </View>
   );
@@ -111,37 +119,78 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
-    display: 'flex',
+    backgroundColor: '#F9F9F9',
+    alignItems: 'center',
     justifyContent: 'center',
-    gap: 24,
   },
-  label: {
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F9F9F9',
+  },
+  loadingText: {
+    marginTop: 10,
     fontSize: 16,
-    marginBottom: 5,
+    color: '#555',
+  },
+  profileImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    marginBottom: 20,
+    borderWidth: 3,
+    borderColor: '#0A7208',
+    backgroundColor: '#FFF',
+  },
+  placeholderImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#E0E0E0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  placeholderText: {
+    color: '#999',
+    fontSize: 14,
+    fontWeight: 'bold',
   },
   input: {
+    width: '90%',
     height: 50,
-    borderColor: '#ccc',
+    borderColor: '#DDD',
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 25,
+    paddingHorizontal: 15,
+    backgroundColor: '#FFF',
     marginBottom: 15,
-    paddingHorizontal: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
   saveButton: {
     backgroundColor: '#0A7208',
-    padding: 15,
-    borderRadius: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 25,
     alignItems: 'center',
+    justifyContent: 'center',
+    width: '90%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 3,
+    marginTop: 10,
   },
   saveButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  loadingText: {
+    color: '#FFF',
     fontSize: 18,
-    textAlign: 'center',
-    color: '#333',
+    fontWeight: 'bold',
   },
 });
 

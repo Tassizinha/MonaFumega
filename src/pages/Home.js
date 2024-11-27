@@ -32,7 +32,7 @@ export default function HomeScreen({ navigation }) {
   const renderNewsItem = ({ item }) => (
     <TouchableOpacity
       style={styles.newsItem}
-      onPress={() => navigation.navigate('Details', { newsId: item.id, title: item.title })} // Navega para a tela de detalhes
+      onPress={() => navigation.navigate('Details', { newsId: item.id, title: item.title })} 
     >
       <Image source={item.image} style={styles.newsImage} />
       <Text style={styles.newsTitle}>{item.title}</Text>
@@ -41,12 +41,12 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Cabeçalho */}
+
       <View style={styles.header}>
         <View style={styles.navHeader}>
           <Image style={styles.image} source={icon} />
 
-          {/* Ícone de usuário para navegar até a tela de perfil */}
+       
           <TouchableOpacity onPress={() => navigation.navigate('UserProfile')}>
             <MaterialIcons name="person-outline" size={35} color="black" />
           </TouchableOpacity>
@@ -54,7 +54,7 @@ export default function HomeScreen({ navigation }) {
         </View>
       </View>
 
-      {/* Slider de notícias */}
+ 
       <View style={styles.slider}>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {sliderImages.map((item) => renderSliderItem({ item }))}
@@ -69,7 +69,7 @@ export default function HomeScreen({ navigation }) {
         <Text style={styles.textTitle}>Chat de Discussão</Text>
         <Text style={styles.parag}> Escolha um tema abaixo para acessar o chat!</Text>
       </View>
-      {/* Grid de notícias */}
+   
       <FlatList
         data={newsData}
         renderItem={renderNewsItem}

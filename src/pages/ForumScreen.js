@@ -64,7 +64,7 @@ export default function ForumScreen({ route }) {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Text style={styles.title}>{title}</Text>
-
+        <Text style={styles.chatComunidade}>Chat da comunidade</Text>
         <View style={styles.commentsContainer}>
           {comments.map((item, index) => (
             <View key={item.commentId} style={styles.commentCard}>
@@ -108,6 +108,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 16,
+  },
+  chatComunidade:{
+    fontSize:18,
+    width:"100%",
+    marginBottom: 15,
   },
   commentsContainer: {
     marginBottom: 16,
